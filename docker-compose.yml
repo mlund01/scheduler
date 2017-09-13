@@ -1,0 +1,22 @@
+version: '3'
+services:
+  postgres:
+    image: postgres:9.4.5
+    environment:
+      POSTGRES_USER: scheduler
+      POSTGRES_PASSWORD: scheduler_local_db_password
+    ports:
+      - '5432:5432'
+    volumes:
+      - ~/.docker-volumes/scheduler/postgresql/data:/var/lib/postgresql/data
+
+  app:
+    build: .
+    links:
+      - postgres
+    volumes: 
+      - .:/app
+    ports:
+      - '3000:3000'
+    env_file:
+      - .scheduler.env
