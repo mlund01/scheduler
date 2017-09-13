@@ -1,24 +1,33 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+This scheduling app is built with Ruby on Rails 5.1 using the API mode (which mostly removes unneccesary middleware used in MVC).
 
-Things you may want to cover:
+## Configuration and Running the app
 
-* Ruby version
+I've chosen to use to docker and docker-compose to run this app locally. Please follow the steps below to build and run the app
 
-* System dependencies
+#### How to configure and run the app
 
-* Configuration
+1. Pull down this repo `git pull https://github.com/mlund01/scheduler.git`
+2. Make sure you have the latest version of Docker ([mac](https://www.docker.com/docker-mac)/[windows](https://www.docker.com/docker-windows)) installed
+3. Ensure that the Docker Engine is running after install
+4. `cd` into the base project directory (where the Gemfile and README files sit)
+5. Run `docker-compose build` -> This would be a good time to grab a drink... it'll take a few minutes the first time!
+6. Run `docker-compose up` -> if you see "Listening on tcp://0.0.0.0:3000" in the logs for "app_1", it built correctly (ignore the postgres shutdown for now)
+7. ctrl + c to kill the processes.
+8. Run `docker-compose run app rails db:reset` -> this will build the development database
+9. Run `docker-compose run app rails db:setup` -> this will load the schema, as well as seed the database (as defined in db/seed.rb)
+10. Run `docker-compose up` and go to localhost:3000. If you see, "Yay, You're on Rails!", You did it!
 
-* Database creation
+#### A few notes on configuration setup
 
-* Database initialization
+1. After going through these configuration steps the first time, you should only have to run `docker-compose up` from the project directory for future visits
+2. ctrl + c usually works to kill all docker-compose processes, but it sometimes aborts instead, so just use `docker-compose down` to stop the processes
+3. Configuration for local dev is setup in docker-compose.yml for the main process and postgres
+4. If you would like to query against the local database using the native terminal (psql for postgres in this case), it is easiest to run `docker-compose run app rails db:console` and then enter the db password set under the postgres service in the docker-compose.yml file
 
-* How to run the test suite
+## How to use the API
 
-* Services (job queues, cache servers, search engines, etc.)
+1. This API uses basic authentication to provide for unique user experiences as required by the user stories. The usernames and credentials are stored in the .user_accounts.yml file, along with some details about each of the users (role, name, etc.)
+2. Because every user story requires a user identity, and should only be visible/private to each user, every endpoint requires that you include an Authentication Header with a base64 encoding of "{username}:{password}" preceded by "Basic ". For example, `Authorization: Basic QUNmZWU5MmRmMmM2N2FjOWNNjU1NWM2OA==` (or just use something like Postman, which will add the header appropriately for you).
 
-* Deployment instructions
-
-* ...
