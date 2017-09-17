@@ -24,7 +24,7 @@ I've chosen to use to docker and docker-compose to run this app locally. Please 
 1. After going through these configuration steps the first time, you should only have to run `docker-compose up` from the project directory for future visits
 2. ctrl + c usually works to kill all docker-compose processes, but it sometimes aborts instead, so just use `docker-compose down` to stop the processes
 3. Configuration for local dev is setup in docker-compose.yml for the main process and postgres
-4. If you would like to query against the local database using the native terminal (psql for postgres in this case), it is easiest to run `docker-compose run app rails db:console` and then enter the db password set under the postgres service in the docker-compose.yml file
+4. If you would like to query against the local database using the native terminal (psql for postgres in this case), it is easiest to run `docker-compose run app rails dbconsole` and then enter the db password set under the postgres service in the docker-compose.yml file
 
 ## How to use the API
 
