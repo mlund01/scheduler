@@ -7,6 +7,8 @@ class Shift < ApplicationRecord
 
 	scope :assigned_to, -> (id) { where(:employee_id => id) }
 
+	scope :limit_by_time_range, -> (low, high) { where("end_time >= ? AND start_time <= ?", low, high) }
+
 	private
 
 	def end_time_must_be_later_than_start_time

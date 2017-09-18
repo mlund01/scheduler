@@ -37,5 +37,21 @@ RSpec.describe Shift, type: :model do
 			employee_shifts = Shift.assigned_to(@employee.id)
 			expect(employee_shifts.count).to eq(2)
 		end
+
+		it "should return any shift within date range with limit_by_time_range (inclusively)" do
+			t = Time.new
+			create(:shift, :manager_id => @manager.id, :employee_id => @employee.id, :start_time => t + 10.minutes, :end_time => t + 70.minutes)
+			create(:shift, :manager_id => @manager.id, :employee_id => @employee.id, :start_time => t + 40.minutes, :end_time => t + 50.minutes)
+			create(:shift, :manager_id => @manager.id, :employee_id => @employee.id, :start_time => t + 10.minutes, :end_time => t + 50.minutes)
+			create(:shift, :manager_id => @manager.id, :employee_id => @employee.id, :start_time => t + 10.minutes, :end_time => t + 20.minutes)
+			puts Shift.limit_by_time_range(t + 25.minutes, t + 45.minutes).as_json
+			expect(Shift.limit_by_time_range(t + 25.minutes, t + 45.minutes).count).to eq(3)
+			expect(Shift.limit_by_time_range(t, t + 5.minutes).count).to eq(0)
+			expect(Shift.limit_by_time_range(t, t + 20.minutes).count).to eq(3)
+			expect(Shift.limit_by_time_range(t + 60.minutes, t + 80.minutes).count).to eq(1)
+			expect(Shift.limit_by_time_range(t, t + 80.minutes).count).to eq(4)
+			expect(Shift.limit_by_time_range(t, t + 10.minutes).count).to eq(3)
+			expect(Shift.limit_by_time_range(t + 70.minutes, t + 80.minutes).count).to eq(1)
+		end
 	end
 end
