@@ -4,7 +4,7 @@ This scheduling app is built with Ruby on Rails 5.1 using the API mode (which mo
 
 ## Configuration and Running the app
 
-I've chosen to use to docker and docker-compose to run this app locally. Please follow the steps below to build and run the app
+I've chosen to use to docker and docker-compose for local development. Please follow the steps below to build and run the app
 
 #### How to configure and run the app
 
@@ -22,12 +22,30 @@ I've chosen to use to docker and docker-compose to run this app locally. Please 
 #### A few notes on configuration setup
 
 1. After going through these configuration steps the first time, you should only have to run `docker-compose up` from the project directory for future visits
-2. ctrl + c usually works to kill all docker-compose processes, but it sometimes aborts instead, so just use `docker-compose down` to stop the processes
+2. ctrl + c usually works to kill all docker-compose processes, but it sometimes aborts instead (a known issue), so just use `docker-compose down` to stop the processes
 3. Configuration for local dev is setup in docker-compose.yml for the main process and postgres
 4. If you would like to query against the local database using the native terminal (psql for postgres in this case), it is easiest to run `docker-compose run app rails dbconsole` and then enter the db password set under the postgres service in the docker-compose.yml file
 
 ## How to use the API
 
 1. This API uses basic authentication to provide for unique user experiences as required by the user stories. The usernames and credentials are stored in the .user_accounts.yml file, along with some details about each of the users (role, name, etc.)
-2. Because every user story requires a user identity, and should only be visible/private to each user, every endpoint requires that you include an Authentication Header with a base64 encoding of "{username}:{password}" preceded by "Basic ". For example, `Authorization: Basic QUNmZWU5MmRmMmM2N2FjOWNNjU1NWM2OA==` (or just use something like Postman, which will add the header appropriately for you).
+2. Every endpoint requires that you include an 'Authorization' Header with a base64 encoding of "{username}:{password}" preceded by "Basic ". For example, `Authorization: Basic QUNmZWU5MmRmMmM2N2FjOWNNjU1NWM2OA==` (or just use something like Postman, which will encode the credentials and add the header for you).
+
+## Testing the app
+
+The Scheduler API is well tested with RSpec. The tests include unit tests for each model, and integration tests for each requirement from the user stories. All specs are under the specs directory
+
+To run the tests, run rspec with docker-compose with RAILS_ENV set to 'test',
+
+`docker-compose run -e "RAILS_ENV=test" app rspec`
+
+To run all model unit tests, use file path with wild card,
+
+`docker-compose run -e "RAILS_ENV=test" app rspec spec/models/*`
+
+To run an individual unit, target the file and the test line number,
+
+`docker-compose run -e "RAILS_ENV=test" app rspec spec/models/shift_spec:9`
+
+
 
