@@ -6,6 +6,7 @@ class ApplicationController < ActionController::API
 
 	rescue_from ::ActiveRecord::RecordNotFound, with: :record_not_found_handler
 	rescue_from ::Pundit::NotAuthorizedError, with: :not_authorized_handler
+	rescue_from ::ArgumentError, with: :invalid_argument_handler
 
 	private
 
@@ -15,6 +16,10 @@ class ApplicationController < ActionController::API
 
 	def not_authorized_handler(e)
 		render json: { error: "Access Denied" }, status: :unauthorized
+	end
+
+	def invalid_argument_handler(e)
+		render json: { error: "Invalid Argument", message: e.message }, status: :bad_request
 	end
 
 	def current_user
