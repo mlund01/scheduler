@@ -12,7 +12,7 @@ class ShiftPolicy < ApplicationPolicy
 			if user.manager?
 				scope.all
 			else
-				scope.assigned_to(user.id)
+				scope.assigned_to(user.id).or(scope.unassigned)
 			end
 		end
 	end
