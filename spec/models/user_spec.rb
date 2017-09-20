@@ -11,7 +11,7 @@ RSpec.describe User, type: :model do
 		it { should_not allow_value("tenletters").for(:phone) }
 		it { should_not allow_value("tenLet1232").for(:phone) }
 		it "should raise error without presence of phone or email" do
-			expect{create(:user, :role => :employee)}.to raise_error(ActiveRecord::RecordInvalid, "Validation failed: Phone or Email must be present")
+			expect{create(:user, :role => :employee, :email => nil, :phone => nil)}.to raise_error(ActiveRecord::RecordInvalid, "Validation failed: Phone or Email must be present")
 		end
 		it "should validate presence of phone or email" do
 			expect{create(:user, :role => :employee, :phone => "1233211234")}.to_not raise_error

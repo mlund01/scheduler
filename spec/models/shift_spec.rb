@@ -29,12 +29,20 @@ RSpec.describe Shift, type: :model do
 	end
 
 	context "scopes" do
-		it "should only return shifts assigned to employee with assigned_to" do
+		it "should only return shifts assigned to employee with assigned_to scope" do
 			employee_2 = create(:user, :role => :employee, :phone => '3332221111')
 			create(:shift, :manager_id => @manager.id, :employee_id => @employee.id)
 			create(:shift, :manager_id => @manager.id, :employee_id => @employee.id)
 			create(:shift, :manager_id => @manager.id, :employee_id => employee_2.id)
 			employee_shifts = Shift.assigned_to(@employee.id)
+			expect(employee_shifts.count).to eq(2)
+		end
+
+		it "should return unassigned shifts with unassigned scope" do
+			create(:shift, :manager_id => @manager.id)
+			create(:shift, :manager_id => @manager.id, :employee_id => @employee.id)
+			create(:shift, :manager_id => @manager.id)
+			employee_shifts = Shift.unassigned
 			expect(employee_shifts.count).to eq(2)
 		end
 
