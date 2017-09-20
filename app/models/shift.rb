@@ -1,4 +1,6 @@
 class Shift < ApplicationRecord
+	default_scope { order(start_time: :asc) }
+
 	validates_presence_of :start_time, :end_time, :manager_id
 	validate :end_time_must_be_later_than_start_time
 
@@ -6,6 +8,7 @@ class Shift < ApplicationRecord
 	belongs_to :employee, :class_name => "User", optional: true
 
 	scope :assigned_to, -> (id) { where(:employee_id => id) }
+	scope :unassigned, -> { where(:employee_id => nil) }
 
 	scope :limit_by_time_range, -> (low, high) { where("end_time >= ? AND start_time <= ?", low, high) }
 
