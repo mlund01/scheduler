@@ -3,12 +3,13 @@ class Api::V1::ShiftsController < ApplicationController
 	before_action :set_shift, :only => [:update]
 
 	def index
-		shifts = Shift.all
+		shifts = policy_scope(Shift)
 		render json: shifts, status: :ok
 	end
 
 	def create
 		shift = Shift.new(shift_params)
+		authorize shift
 		if shift.save
 			render json: shift, status: :ok
 		else
@@ -17,6 +18,7 @@ class Api::V1::ShiftsController < ApplicationController
 	end
 
 	def update
+		authorize @shift
 		if @shift.update(shift_params)
 			render json: @shift, status: :ok
 		else

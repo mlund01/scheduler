@@ -1,14 +1,20 @@
 class ApplicationController < ActionController::API
 	include ActionController::HttpAuthentication::Basic
+	include Pundit
 
 	before_action :authenticate_and_set_current_user
 
-	rescue_from ::ActiveRecord::RecordNotFound, with: :record_not_found
+	rescue_from ::ActiveRecord::RecordNotFound, with: :record_not_found_handler
+	rescue_from ::Pundit::NotAuthorizedError, with: :not_authorized_handler
 
 	private
 
-	def record_not_found(e)
+	def record_not_found_handler(e)
 		render json: { error: e.message }, status: :not_found
+	end
+
+	def not_authorized_handler(e)
+		render json: { error: "Access Denied" }, status: :unauthorized
 	end
 
 	def current_user
