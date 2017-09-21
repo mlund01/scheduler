@@ -12,6 +12,7 @@ class User < ApplicationRecord
 	has_many :managed_shifts, :class_name => "Shift", :foreign_key => :manager_id
 
 	scope :find_by_phone_or_email, -> (val) { where("phone=? OR email=?", val, val) }
+	scope :with_shift_in_time_range, -> (low, high) { joins(:shifts).merge(Shift.limit_by_time_range(Time.parse(low), Time.parse(high))) }
 
 	before_validation :clean_phone_number
 	before_create :encrypt_password
