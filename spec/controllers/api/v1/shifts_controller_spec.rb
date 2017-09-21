@@ -54,6 +54,10 @@ RSpec.describe Api::V1::ShiftsController, type: :controller do
 			get :index, params: { scope: "assigned" }
 			expect(json.length).to eq(2)
 		end
+		it "should show links to the manager in json response" do
+			get :index
+			expect(json[0]["links"]["manager"]).to eq("/api/v1/users/" + manager.id.to_s)
+		end
 	end
 
 	context "index as a manager" do
