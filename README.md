@@ -286,6 +286,8 @@ curl -X POST http://localhost:3000/api/v1/shifts \
 
 6. As a manager, I want to see the schedule, by listing shifts within a specific time period,
 
+Note: I built this feature to be inclusive of any shift that fell within the time range, meaning that only part of the shift has to fall within the range, not the entire shift from start to finish
+
 ##### Request
 
 ```shell
@@ -386,7 +388,7 @@ curl -X PUT http://localhost:3000/api/v1/shifts/3 \
 }
 ```
 
-9. As a manager, I want to contact an employe, by seeing employee details
+9. As a manager, I want to contact an employee, by seeing employee details
 
 As simple as getting the user with their id... also easy if you want to get the details of an employee from a shift, just use the link in the response object.
 
