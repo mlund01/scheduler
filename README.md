@@ -8,7 +8,7 @@ I've chosen to use to docker and docker-compose for local development. Please fo
 
 #### How to configure and run the app
 
-1. Pull down this repo `git pull https://github.com/mlund01/scheduler.git`
+1. Pull down this repo `git clone https://github.com/mlund01/scheduler.git`
 2. Make sure you have the latest version of Docker ([mac](https://www.docker.com/docker-mac)/[windows](https://www.docker.com/docker-windows)) installed
 3. Ensure that the Docker Engine is running after install
 4. `cd` into the base project directory (where the Gemfile and README files sit)
