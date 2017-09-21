@@ -21,6 +21,12 @@ RSpec.describe Shift, type: :model do
 					)
 			}.to raise_error(ActiveRecord::RecordInvalid, "Validation failed: End time must be set to a later time than start_time")
 		end
+		it "should not allow manager_id to be from a user with user type of 'employee'" do
+			user = create(:user, :role => "employee")
+			expect{
+				create(:shift, :manager_id => user.id, :start_time => Time.new, :end_time => Time.new + 5.hours)
+				}.to raise_error(ActiveRecord::RecordInvalid, "Validation failed: Manager must be set to user with the manager role")
+		end
 	end
 
 	context "associations" do
