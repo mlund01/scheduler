@@ -236,4 +236,22 @@ RSpec.describe Api::V1::ShiftsController, type: :controller do
 		end
 	end
 
+	context "summary as employee" do
+		before(:each) do
+			t = Time.new
+			set_valid_auth(employee.email, "johndoe123")
+			create(:shift, :employee_id => employee.id, :manager_id => manager.id, :start_time => t, :end_time => t + 5.hours)
+			create(:shift, :employee_id => employee.id, :manager_id => manager.id, :start_time => t - 1.day, :end_time => t - 1.day + 3.hours)
+			create(:shift, :employee_id => employee.id, :manager_id => manager.id, :start_time => t - 1.week, :end_time => t - 1.week + 5.hours)
+			create(:shift, :employee_id => employee.id, :manager_id => manager.id, :start_time => t + 1.week, :end_time => t + 1.week + 5.hours)
+		end
+		it "should list hours by week and ignore future shifts" do
+			get :summary
+			expect(response).to be_ok
+			expect(json.length).to eq(2)
+			expect(json[0]["hours"] + json[1]["hours"]).to eq(13)
+		end
+
+	end
+
 end

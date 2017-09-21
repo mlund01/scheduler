@@ -29,6 +29,12 @@ class Api::V1::ShiftsController < ApplicationController
 		end
 	end
 
+	def summary
+		summary = Shift.group_hours_by_week(current_user.id)
+		res = serialize_summary_query(summary.as_json)
+		render json: res, status: :ok
+	end
+
 	private
 
 	def shift_params
@@ -52,6 +58,15 @@ class Api::V1::ShiftsController < ApplicationController
 	def limit_by_range(query)
 		query = query.limit_by_time_range(Time.parse(params[:start]), Time.parse(params[:end])) if params[:start].present? and params[:end].present?
 		return query
+	end
+
+	def serialize_summary_query(summary)
+		output = []
+		summary.each do |e|
+			shift_summary = ShiftSummary.new(e["total_hours"], e["week"])
+			output.append(shift_summary)
+		end
+		return output
 	end
 
 

@@ -13,6 +13,10 @@ class Shift < ApplicationRecord
 
 	scope :limit_by_time_range, -> (low, high) { where("end_time >= ? AND start_time <= ?", low, high) }
 
+	def self.group_hours_by_week(employee_id)
+		unscoped.where("start_time <= ? AND employee_id=?", Time.now, employee_id).select("date_trunc('week', start_time::timestamptz AT TIME ZONE '" + Time.zone.name + "') AT TIME ZONE '" + Time.zone.name + "' as week, SUM((EXTRACT(EPOCH FROM (end_time - start_time)) / 60 / 60)) as total_hours").group("week").order("week desc")
+	end
+
 	private
 
 	def end_time_must_be_later_than_start_time
