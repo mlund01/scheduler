@@ -7,8 +7,10 @@ RSpec.describe Api::V1::UsersController, type: :controller do
 
 	context "index" do
 		it "should require authentication/valid auth" do
+			remove_auth
 			get :index
 			expect(response).to be_unauthorized
+
 			set_invalid_auth
 			get :index
 			expect(response).to be_unauthorized
