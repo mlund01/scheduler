@@ -59,4 +59,24 @@ User.create(
 		:start_time => Time.new + e.days,
 		:end_time => Time.new + e.days + 5.hours
 		)
+	Shift.create(
+		:manager_id => e % 2 + 1,
+		:employee_id => e > 45 ? nil : e % 4 + 3,
+		:start_time => Time.new - e.days,
+		:end_time => Time.new - e.days + 5.hours
+		)
 end
+
+Shift.create(
+	:manager_id => 1,
+	:employee_id => 3,
+	:start_time => Time.utc(2017, 10, 30, 1, 0, 0),
+	:end_time => Time.utc(2017, 10, 30, 5, 0, 0)
+	)
+
+Shift.create(
+	:manager_id => 1,
+	:employee_id => 3,
+	:start_time => Time.utc(2017, 10, 29, 23, 0, 0),
+	:end_time => Time.utc(2017, 10, 30, 3, 0, 0)
+	)
