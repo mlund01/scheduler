@@ -16,8 +16,7 @@ I've chosen to use to docker and docker-compose for local development. Please fo
 6. Run `docker-compose up` -> if you see "Listening on tcp://0.0.0.0:3000" in the logs for "app_1", it built correctly (ignore the postgres shutdown for now)
 7. ctrl + c to kill the processes.
 8. Run `docker-compose run app rails db:reset` -> this will build the development database
-9. Run `docker-compose run app rails db:setup` -> this will load the schema, as well as seed the database (as defined in db/seed.rb)
-10. Run `docker-compose up` and go to localhost:3000. If you see, "Yay, You're on Rails!", You did it!
+9. Run `docker-compose up` and go to localhost:3000. If you see, "Yay, You're on Rails!", You did it!
 
 #### A few notes on configuration setup
 
